@@ -16,14 +16,33 @@ import {
   Play,
   Users,
   Zap,
-  CheckCircle
+  CheckCircle,
+  LogOut
 } from "lucide-react";
+import Link from "next/link";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
+  const { logout } = useAuth();
+
   return (
-    <div className="min-h-screen grid-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden z-10">
+    <ProtectedRoute>
+      <div className="min-h-screen grid-background">
+        {/* Header with Logout */}
+        <div className="absolute top-4 right-4 z-20">
+          <Button
+            onClick={logout}
+            variant="ghost"
+            className="text-gray-300 hover:text-white"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
+        </div>
+
+        {/* Hero Section */}
+        <section className="relative overflow-hidden z-10">
         
         <div className="container mx-auto px-4 py-20 lg:py-32">
           <motion.div
@@ -82,13 +101,15 @@ export default function Home() {
               >
                 Get Started
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="!border-[#00ffff] !text-[#00ffff] hover:!bg-[#00ffff]/10 font-semibold px-8 py-3 text-lg"
-              >
-                See Agents
-              </Button>
+              <Link href="/agents">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="!border-[#00ffff] !text-[#00ffff] hover:!bg-[#00ffff]/10 font-semibold px-8 py-3 text-lg"
+                >
+                  See Agents
+                </Button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
@@ -120,7 +141,8 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <Card className="glassmorphism hover:neon-cyan-border transition-all duration-300 hover:scale-105 cursor-pointer group">
+              <Link href="/agents">
+                <Card className="glassmorphism hover:neon-cyan-border transition-all duration-300 hover:scale-105 cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
                     <Users className="w-8 h-8 text-white" />
@@ -145,6 +167,7 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             </motion.div>
 
             {/* Web Agent */}
@@ -154,7 +177,8 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
             >
-              <Card className="glassmorphism hover:neon-green-border transition-all duration-300 hover:scale-105 cursor-pointer group">
+              <Link href="/agents/web">
+                <Card className="glassmorphism hover:neon-green-border transition-all duration-300 hover:scale-105 cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
                     <Search className="w-8 h-8 text-white" />
@@ -179,6 +203,7 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             </motion.div>
 
             {/* MCP Agent */}
@@ -188,7 +213,8 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="glassmorphism hover:neon-cyan-border transition-all duration-300 hover:scale-105 cursor-pointer group">
+              <Link href="/agents/mcp">
+                <Card className="glassmorphism hover:neon-cyan-border transition-all duration-300 hover:scale-105 cursor-pointer group">
                 <CardHeader className="text-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
                     <Workflow className="w-8 h-8 text-white" />
@@ -213,6 +239,7 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -307,6 +334,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }
