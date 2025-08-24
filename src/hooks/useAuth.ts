@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,10 +14,10 @@ export const useAuth = () => {
   }, []);
 
   const checkAuth = () => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('access_token');
-      const userId = localStorage.getItem('user_id');
-      
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("access_token");
+      const userId = localStorage.getItem("user_id");
+
       if (token && userId) {
         setIsAuthenticated(true);
         setUser({ user_id: userId });
@@ -30,30 +30,30 @@ export const useAuth = () => {
   };
 
   const login = (token: string, userId: string) => {
-    localStorage.setItem('access_token', token);
-    localStorage.setItem('user_id', userId);
+    localStorage.setItem("access_token", token);
+    localStorage.setItem("user_id", userId);
     setIsAuthenticated(true);
     setUser({ user_id: userId });
   };
 
   const logout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_id');
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
     setIsAuthenticated(false);
     setUser(null);
-    router.push('/login');
+    router.push("/login");
   };
 
   const getToken = () => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('access_token');
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("access_token");
     }
     return null;
   };
 
   const requireAuth = () => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+      router.push("/login");
       return false;
     }
     return true;
@@ -67,6 +67,6 @@ export const useAuth = () => {
     logout,
     getToken,
     requireAuth,
-    checkAuth
+    checkAuth,
   };
 };

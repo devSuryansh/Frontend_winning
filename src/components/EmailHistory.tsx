@@ -15,7 +15,7 @@ interface EmailHistoryItem {
 }
 
 export interface EmailHistoryRef {
-  addToHistory: (item: Omit<EmailHistoryItem, 'id' | 'timestamp'>) => void;
+  addToHistory: (item: Omit<EmailHistoryItem, "id" | "timestamp">) => void;
 }
 
 const EmailHistory = forwardRef<EmailHistoryRef>((props, ref) => {
@@ -23,17 +23,19 @@ const EmailHistory = forwardRef<EmailHistoryRef>((props, ref) => {
 
   useEffect(() => {
     // Load email history from localStorage
-    const savedHistory = localStorage.getItem('email_history');
+    const savedHistory = localStorage.getItem("email_history");
     if (savedHistory) {
       const parsed = JSON.parse(savedHistory);
-      setEmailHistory(parsed.map((item: any) => ({
-        ...item,
-        timestamp: new Date(item.timestamp)
-      })));
+      setEmailHistory(
+        parsed.map((item: any) => ({
+          ...item,
+          timestamp: new Date(item.timestamp),
+        }))
+      );
     }
   }, []);
 
-  const addToHistory = (item: Omit<EmailHistoryItem, 'id' | 'timestamp'>) => {
+  const addToHistory = (item: Omit<EmailHistoryItem, "id" | "timestamp">) => {
     const newItem: EmailHistoryItem = {
       ...item,
       id: Date.now().toString(),
@@ -42,9 +44,9 @@ const EmailHistory = forwardRef<EmailHistoryRef>((props, ref) => {
 
     const updatedHistory = [newItem, ...emailHistory].slice(0, 10); // Keep last 10 emails
     setEmailHistory(updatedHistory);
-    
+
     // Save to localStorage
-    localStorage.setItem('email_history', JSON.stringify(updatedHistory));
+    localStorage.setItem("email_history", JSON.stringify(updatedHistory));
   };
 
   useImperativeHandle(ref, () => ({
@@ -81,19 +83,28 @@ const EmailHistory = forwardRef<EmailHistoryRef>((props, ref) => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <User className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-300 truncate">{email.to}</span>
+                    <span className="text-sm text-gray-300 truncate">
+                      {email.to}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-white truncate">{email.subject}</span>
+                    <span className="text-sm text-white truncate">
+                      {email.subject}
+                    </span>
                   </div>
                   {email.error && (
-                    <p className="text-xs text-red-400 mt-1 truncate">{email.error}</p>
+                    <p className="text-xs text-red-400 mt-1 truncate">
+                      {email.error}
+                    </p>
                   )}
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <Badge variant={email.success ? "default" : "destructive"} className="text-xs">
+                <Badge
+                  variant={email.success ? "default" : "destructive"}
+                  className="text-xs"
+                >
                   {email.success ? "Sent" : "Failed"}
                 </Badge>
                 <span className="text-xs text-gray-400">

@@ -16,7 +16,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "AgenticOS - Your AI-Powered Operating System",
-  description: "Do everything with agents. Email, meetings, coding, publishing, search — all in one place.",
+  description:
+    "Do everything with agents. Email, meetings, coding, publishing, search — all in one place.",
 };
 
 export default function RootLayout({
