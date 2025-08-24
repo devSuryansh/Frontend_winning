@@ -50,7 +50,7 @@ export default function LoginPage() {
         setError(errorData.detail || "Invalid API key");
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError("Invalid Api Key");
     } finally {
       setIsLoading(false);
     }
