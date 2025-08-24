@@ -12,18 +12,12 @@ import { Button } from "@/components/ui/button";
 import {
   Mail,
   FileText,
-  Video,
   Search,
-  Briefcase,
-  Linkedin,
   Github,
-  Workflow,
   ArrowLeft,
-  Users,
   Zap,
   CheckCircle,
   MessageSquare,
-  Calendar,
   Send,
   FileEdit,
 } from "lucide-react";
