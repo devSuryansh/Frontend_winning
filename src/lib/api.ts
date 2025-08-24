@@ -3,6 +3,8 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://loca
 
 export const API_ENDPOINTS = {
   SEND_EMAIL: '/api/send-email',
+  GENERATE_DOCS: '/api/generate-docs',
+  DOWNLOAD_DOCS: '/api/download-docs',
   AUTH: '/auth',
   HEALTH: '/health',
 } as const;
