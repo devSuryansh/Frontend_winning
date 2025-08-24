@@ -22,7 +22,6 @@ import {
   CheckCircle,
   AlertCircle,
   Bot,
-  Zap,
   Search,
   BookOpen,
   Type,
@@ -650,9 +649,8 @@ export default function DocsPage() {
                             </div>
                           ) : (
                             <div className="relative flex items-center justify-center gap-3">
-                              <Zap className="w-5 h-5" />
-                              <span>Create Document</span>
                               <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                              <span>Create Document</span>
                             </div>
                           )}
                         </Button>
