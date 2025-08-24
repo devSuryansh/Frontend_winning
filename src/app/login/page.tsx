@@ -1,18 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
-  Key,
-  Sparkles,
-  ArrowRight,
-  Shield
-} from "lucide-react";
+import { Key, Sparkles, ArrowRight, Shield } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiCall } from "@/lib/api";
 
 export default function LoginPage() {
   const [apiKey, setApiKey] = useState("");
@@ -24,34 +26,31 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    
+
     try {
-      const response = await fetch('http://localhost:8000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await apiCall("/auth/login", {
+        method: "POST",
         body: JSON.stringify({
           openai_api_key: apiKey,
-          user_id: `user_${Date.now()}` // Generate a simple user ID
+          user_id: `user_${Date.now()}`, // Generate a simple user ID
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        
+
         // Store the token in localStorage
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('user_id', data.user_id);
-        
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("user_id", data.user_id);
+
         // Redirect to home page
-        router.push('/');
+        router.push("/");
       } else {
         const errorData = await response.json();
-        setError(errorData.detail || 'Invalid API key');
+        setError(errorData.detail || "Invalid API key");
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -72,12 +71,14 @@ export default function LoginPage() {
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
               </div>
-              <CardTitle className="text-3xl font-bold text-white">Welcome to AgenticOS</CardTitle>
+              <CardTitle className="text-3xl font-bold text-white">
+                Welcome to AgenticOS
+              </CardTitle>
               <CardDescription className="text-gray-400 text-lg">
                 Enter your OpenAI API key to get started
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* API Key Input */}
@@ -110,7 +111,9 @@ export default function LoginPage() {
                 <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-700">
                   <div className="flex items-center gap-2 mb-3">
                     <Shield className="w-5 h-5 text-neon-cyan" />
-                    <span className="text-white font-medium">Your API key is secure</span>
+                    <span className="text-white font-medium">
+                      Your API key is secure
+                    </span>
                   </div>
                   <div className="space-y-2 text-sm text-gray-300">
                     <div className="flex items-center gap-2">
