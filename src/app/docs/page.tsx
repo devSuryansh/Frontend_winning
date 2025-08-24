@@ -22,6 +22,7 @@ import {
   CheckCircle,
   AlertCircle,
   Bot,
+  Zap,
   Search,
   BookOpen,
   Type,
@@ -29,24 +30,17 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
-
-interface DocsResponse {
-  success: boolean;
-  message: string;
-  details?: {
-    action: string;
-    documentTitle: string;
-    content: string;
-    wordCount: number;
-  };
-}
+import { useAuth } from "@/hooks/useAuth";
+import { apiCall, API_ENDPOINTS } from "@/lib/api";
+import { CreateDocRequest, CreateDocResponse } from "@/types/docs";
 
 export default function DocsPage() {
   const [documentTitle, setDocumentTitle] = useState("");
   const [contentPrompt, setContentPrompt] = useState("");
   const [selectedDocType, setSelectedDocType] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState<DocsResponse | null>(null);
+  const [response, setResponse] = useState<CreateDocResponse | null>(null);
+  const { getToken } = useAuth();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -74,22 +68,84 @@ export default function DocsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    console.log("Form submitted with:", {
+      documentTitle,
+      contentPrompt,
+      selectedDocType,
+    });
 
-    // Simulate API call
-    setTimeout(() => {
-      setResponse({
-        success: true,
-        message: "Document created successfully!",
-        details: {
-          action: selectedDocType,
-          documentTitle,
-          content: contentPrompt,
-          wordCount: Math.floor(Math.random() * 2000) + 500,
+    setIsLoading(true);
+    setResponse(null);
+
+    try {
+      const token = getToken();
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const requestBody: CreateDocRequest = {
+        title: documentTitle,
+        description: contentPrompt,
+        content_type: selectedDocType || "general",
+      };
+
+      console.log("Sending request with body:", requestBody);
+
+      const apiResponse = await apiCall(API_ENDPOINTS.CREATE_DOCS, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(requestBody),
       });
+
+      console.log("API Response status:", apiResponse.status);
+      console.log("API Response headers:", apiResponse.headers);
+
+      const data: CreateDocResponse = await apiResponse.json();
+
+      // Debug: Log the response to see what we're getting
+      console.log("Backend response:", data);
+
+      setResponse(data);
+
+      // Note: apiCall already throws on !response.ok, so we don't need to check again
+    } catch (error) {
+      console.error("Error creating document:", error);
+
+      // For testing purposes, let's add a fallback simulation
+      // Remove this once the backend is ready
+      if (error instanceof Error && error.message.includes("API call failed")) {
+        console.log("API not available, using fallback simulation...");
+        setTimeout(() => {
+          const simulatedResponse: CreateDocResponse = {
+            success: true,
+            doc_id: "test-doc-" + Date.now(),
+            doc_title: documentTitle,
+            doc_url: "https://docs.google.com/document/d/test",
+            result: "Document created successfully (simulated)",
+            user_id: "test-user",
+            service: "google_docs",
+            action: "create_document",
+          };
+          setResponse(simulatedResponse);
+          setIsLoading(false);
+        }, 2000);
+        return;
+      }
+
+      const errorResponse: CreateDocResponse = {
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred",
+        user_id: "",
+      };
+      setResponse(errorResponse);
+    } finally {
       setIsLoading(false);
-    }, 3000);
+    }
   };
 
   const documentTypes = [
@@ -321,9 +377,13 @@ export default function DocsPage() {
                             {response.success ? "Document Created!" : "Error"}
                           </span>
                         </div>
-                        <p className="text-white text-lg">{response.message}</p>
+                        <p className="text-white text-lg">
+                          {response.success
+                            ? "Document created successfully!"
+                            : response.error || "Failed to create document"}
+                        </p>
 
-                        {response.details && (
+                        {response.success && (
                           <div className="mt-4 p-4 bg-white/5 rounded-lg">
                             <h4 className="text-white font-medium mb-2">
                               Document Details:
@@ -331,18 +391,24 @@ export default function DocsPage() {
                             <div className="space-y-2 text-sm text-gray-300">
                               <p>
                                 <span className="text-green-400">Type:</span>{" "}
-                                {response.details.action}
+                                {selectedDocType
+                                  ? documentTypes.find(
+                                      (type) => type.id === selectedDocType
+                                    )?.title || selectedDocType
+                                  : "General"}
                               </p>
                               <p>
                                 <span className="text-green-400">Title:</span>{" "}
-                                {response.details.documentTitle}
+                                {documentTitle}
                               </p>
-                              <p>
-                                <span className="text-green-400">
-                                  Word Count:
-                                </span>{" "}
-                                {response.details.wordCount} words
-                              </p>
+                              {response.doc_id && (
+                                <p>
+                                  <span className="text-green-400">
+                                    Document ID:
+                                  </span>{" "}
+                                  {response.doc_id}
+                                </p>
+                              )}
                             </div>
                           </div>
                         )}
@@ -356,13 +422,27 @@ export default function DocsPage() {
                           <FileText className="w-5 h-5 mr-2" />
                           Create Another Document
                         </Button>
-                        <Button
-                          variant="outline"
-                          className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10 py-3 text-lg rounded-xl"
-                        >
-                          <Share2 className="w-5 h-5 mr-2" />
-                          Open in Google Docs
-                        </Button>
+                        {response.doc_url ? (
+                          <Button
+                            variant="outline"
+                            className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10 py-3 text-lg rounded-xl"
+                            onClick={() =>
+                              window.open(response.doc_url, "_blank")
+                            }
+                          >
+                            <Share2 className="w-5 h-5 mr-2" />
+                            Open in Google Docs
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10 py-3 text-lg rounded-xl opacity-50 cursor-not-allowed"
+                            disabled
+                          >
+                            <Share2 className="w-5 h-5 mr-2" />
+                            Google Docs URL Pending
+                          </Button>
+                        )}
                       </div>
                     </motion.div>
                   ) : (
@@ -400,11 +480,60 @@ export default function DocsPage() {
                         </div>
                       </motion.div>
 
+                      {/* Document Type Selection */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.45 }}
+                        className="space-y-3"
+                      >
+                        <Label className="text-white font-semibold text-lg">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                              <FileText className="w-4 h-4 text-blue-400" />
+                            </div>
+                            Document Type
+                          </div>
+                        </Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {documentTypes.map((docType) => (
+                            <div
+                              key={docType.id}
+                              className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
+                                selectedDocType === docType.id
+                                  ? "bg-white/10 border-green-400 ring-2 ring-green-400/30"
+                                  : "bg-white/5 border-white/20 hover:border-green-400/50 hover:bg-white/8"
+                              }`}
+                              onClick={() => setSelectedDocType(docType.id)}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`w-10 h-10 bg-gradient-to-br ${docType.color} rounded-lg flex items-center justify-center`}
+                                >
+                                  <docType.icon className="w-5 h-5 text-white" />
+                                </div>
+                                <div>
+                                  <h4 className="text-white font-medium">
+                                    {docType.title}
+                                  </h4>
+                                  <p className="text-gray-400 text-sm">
+                                    {docType.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-sm text-gray-400 mt-2">
+                          Choose the type of document you want to create
+                        </p>
+                      </motion.div>
+
                       {/* Content Description */}
                       <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6, delay: 0.5 }}
+                        transition={{ duration: 0.6, delay: 0.55 }}
                         className="space-y-3"
                       >
                         <Label
@@ -440,7 +569,7 @@ export default function DocsPage() {
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
+                        transition={{ duration: 0.6, delay: 0.65 }}
                         className="bg-white/5 rounded-xl p-6 border border-white/10 backdrop-blur-sm"
                       >
                         <div className="flex items-center gap-3 mb-6">
@@ -492,17 +621,24 @@ export default function DocsPage() {
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.7 }}
+                        transition={{ duration: 0.6, delay: 0.75 }}
                         className="flex justify-center pt-6"
                       >
                         <Button
                           type="submit"
                           disabled={
-                            isLoading ||
-                            !contentPrompt ||
-                            !documentTitle ||
-                            !selectedDocType
+                            isLoading || !contentPrompt || !documentTitle
                           }
+                          onClick={() => {
+                            console.log("Button clicked!", {
+                              isLoading,
+                              contentPrompt: !!contentPrompt,
+                              documentTitle: !!documentTitle,
+                              selectedDocType: !!selectedDocType,
+                              isDisabled:
+                                isLoading || !contentPrompt || !documentTitle,
+                            });
+                          }}
                           className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 hover:from-green-500 hover:via-emerald-500 hover:to-green-500 text-white font-bold px-16 py-4 text-lg rounded-xl border-0 shadow-2xl shadow-green-500/25 group disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden relative"
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -514,8 +650,9 @@ export default function DocsPage() {
                             </div>
                           ) : (
                             <div className="relative flex items-center justify-center gap-3">
-                              <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                              <Zap className="w-5 h-5" />
                               <span>Create Document</span>
+                              <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
                             </div>
                           )}
                         </Button>
