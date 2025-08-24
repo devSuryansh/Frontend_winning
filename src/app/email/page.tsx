@@ -158,24 +158,29 @@ export default function EmailPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <Card className="glassmorphism border border-gray-700">
-                  <CardHeader className="text-center border-b border-gray-700">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-white" />
+                <Card className="glassmorphism border border-gray-700 shadow-2xl shadow-cyan-500/10">
+                  <CardHeader className="text-center border-b border-gray-700 bg-gradient-to-r from-gray-900/50 to-gray-800/50">
+                    <div className="flex items-center justify-center gap-4 mb-6">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                          <Mail className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                          <Sparkles className="w-3 h-3 text-white" />
+                        </div>
                       </div>
-                      <div>
-                        <CardTitle className="text-2xl font-bold text-white">
-                          Compose Email
+                      <div className="text-left">
+                        <CardTitle className="text-3xl font-bold text-white mb-2">
+                          AI Email Composer
                         </CardTitle>
-                        <CardDescription className="text-gray-400">
-                          AI-powered email composition
+                        <CardDescription className="text-gray-300 text-base">
+                          Intelligent email generation powered by Portia AI
                         </CardDescription>
                       </div>
                     </div>
                   </CardHeader>
 
-                  <CardContent className="p-8">
+                  <CardContent className="p-8 bg-gradient-to-b from-gray-900/30 to-gray-900/10">
                     {/* Response Display */}
                     {response && (
                       <motion.div
@@ -210,34 +215,33 @@ export default function EmailPage() {
                               </p>
                             )}
                             {response.needs_authentication && (
-                              <div className="bg-yellow-900/20 border border-yellow-500/50 rounded p-3 mt-2">
-                                <div className="flex items-center gap-2 text-sm mb-2">
-                                  <Key className="w-4 h-4 text-yellow-400" />
-                                  <span className="text-yellow-300 font-medium">
-                                    Gmail Authentication Required
-                                  </span>
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-500/40 rounded-xl p-4 mt-3 backdrop-blur-sm"
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                                    <Key className="w-5 h-5 text-black" />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-amber-200 font-semibold text-sm">
+                                      Gmail Authentication Required
+                                    </h4>
+                                    <p className="text-amber-300/80 text-xs">
+                                      Connect your Gmail account to send emails
+                                    </p>
+                                  </div>
                                 </div>
-                                <p className="text-xs text-yellow-200 mb-3">
-                                  You need to authenticate with Gmail to send
-                                  emails. Click the button below to authorize
-                                  access.
+
+                                <p className="text-amber-100/90 text-sm mb-4 leading-relaxed">
+                                  To send emails through Gmail, you need to
+                                  authenticate your account. This is a secure
+                                  one-time setup that allows Portia AI to send
+                                  emails on your behalf.
                                 </p>
 
-                                {/* Debug info */}
-                                <div className="text-xs text-gray-400 mb-2 p-2 bg-gray-800/50 rounded">
-                                  <div>
-                                    OAuth URL:{" "}
-                                    {response.oauth_url || "Not provided"}
-                                  </div>
-                                  <div>
-                                    Needs Auth:{" "}
-                                    {response.needs_authentication
-                                      ? "Yes"
-                                      : "No"}
-                                  </div>
-                                </div>
-
-                                <div className="flex gap-2">
+                                <div className="flex flex-col sm:flex-row gap-3">
                                   {response.oauth_url ? (
                                     <Button
                                       onClick={() =>
@@ -246,15 +250,16 @@ export default function EmailPage() {
                                           "_blank"
                                         )
                                       }
-                                      size="sm"
-                                      className="bg-yellow-600 hover:bg-yellow-700 text-black font-medium"
+                                      className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-semibold shadow-lg hover:shadow-amber-500/25 transition-all duration-200"
                                     >
                                       <ExternalLink className="w-4 h-4 mr-2" />
-                                      Authenticate Gmail
+                                      Connect Gmail Account
                                     </Button>
                                   ) : (
-                                    <div className="text-xs text-red-300">
-                                      OAuth URL not found in response
+                                    <div className="text-sm text-red-300 bg-red-900/20 border border-red-500/30 rounded-lg p-3">
+                                      <AlertCircle className="w-4 h-4 inline mr-2" />
+                                      Authentication URL unavailable. Please try
+                                      again.
                                     </div>
                                   )}
                                   <Button
@@ -263,15 +268,14 @@ export default function EmailPage() {
                                         preventDefault: () => {},
                                       } as React.FormEvent)
                                     }
-                                    size="sm"
                                     variant="outline"
-                                    className="border-yellow-500/50 text-yellow-300 hover:bg-yellow-900/20"
+                                    className="border-amber-500/50 text-amber-200 hover:bg-amber-900/20 hover:border-amber-400"
                                   >
                                     <Send className="w-4 h-4 mr-2" />
-                                    Retry Send
+                                    Try Again
                                   </Button>
                                 </div>
-                              </div>
+                              </motion.div>
                             )}
                             {response.success && (
                               <Button
@@ -290,105 +294,161 @@ export default function EmailPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                       {/* Recipient Email */}
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <Label
                           htmlFor="recipientEmail"
-                          className="text-white font-medium"
+                          className="text-white font-semibold text-base"
                         >
-                          <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-neon-cyan" />
-                            Recipient Email Address
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                              <User className="w-4 h-4 text-white" />
+                            </div>
+                            <span>Recipient Email Address</span>
                           </div>
                         </Label>
-                        <Input
-                          id="recipientEmail"
-                          type="email"
-                          placeholder="recipient@example.com"
-                          value={recipientEmail}
-                          onChange={(e) => setRecipientEmail(e.target.value)}
-                          className="bg-gray-900/50 border-gray-600 text-white placeholder-gray-400 focus:border-neon-cyan focus:ring-neon-cyan"
-                          required
-                          disabled={isLoading}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="recipientEmail"
+                            type="email"
+                            placeholder="Enter recipient's email address..."
+                            value={recipientEmail}
+                            onChange={(e) => setRecipientEmail(e.target.value)}
+                            className="bg-gray-900/60 border-gray-600 text-white placeholder-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 h-12 text-base rounded-xl shadow-inner"
+                            required
+                            disabled={isLoading}
+                          />
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <Mail className="w-5 h-5 text-gray-400" />
+                          </div>
+                        </div>
                       </div>
 
                       {/* Email Subject */}
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <Label
                           htmlFor="subject"
-                          className="text-white font-medium"
+                          className="text-white font-semibold text-base"
                         >
-                          <div className="flex items-center gap-2">
-                            <MessageSquare className="w-4 h-4 text-neon-cyan" />
-                            Email Subject
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                              <MessageSquare className="w-4 h-4 text-white" />
+                            </div>
+                            <span>Email Subject</span>
                           </div>
                         </Label>
-                        <Input
-                          id="subject"
-                          type="text"
-                          placeholder="e.g., 'Follow up on project proposal', 'Schedule a meeting', 'Thank you for your time'"
-                          value={subject}
-                          onChange={(e) => setSubject(e.target.value)}
-                          className="bg-gray-900/50 border-gray-600 text-white placeholder-gray-400 focus:border-neon-cyan focus:ring-neon-cyan"
-                          required
-                          disabled={isLoading}
-                        />
-                        <p className="text-sm text-gray-400">
-                          AI will generate professional email content based on
-                          your subject line
-                        </p>
+                        <div className="relative">
+                          <Input
+                            id="subject"
+                            type="text"
+                            placeholder="Describe what your email is about..."
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                            className="bg-gray-900/60 border-gray-600 text-white placeholder-gray-400 focus:border-purple-400 focus:ring-purple-400/20 h-12 text-base rounded-xl shadow-inner"
+                            required
+                            disabled={isLoading}
+                          />
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <Sparkles className="w-5 h-5 text-gray-400" />
+                          </div>
+                        </div>
+                        <div className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 border border-purple-500/30 rounded-lg p-3">
+                          <p className="text-sm text-purple-200 flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-purple-400" />
+                            AI will craft professional email content based on
+                            your subject line
+                          </p>
+                        </div>
                       </div>
 
                       {/* AI Features Preview */}
-                      <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-700">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Sparkles className="w-5 h-5 text-neon-cyan" />
-                          <span className="text-white font-medium">
-                            Portia AI will handle:
-                          </span>
-                        </div>
-                        <div className="grid md:grid-cols-2 gap-3 text-sm text-gray-300">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-neon-cyan rounded-full"></div>
-                            <span>Generate email content from subject</span>
+                      <div className="bg-gradient-to-br from-cyan-900/20 via-blue-900/20 to-purple-900/20 rounded-xl p-6 border border-cyan-500/30 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
+                            <Sparkles className="w-5 h-5 text-white" />
                           </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-neon-cyan rounded-full"></div>
-                            <span>Professional tone & formatting</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-neon-cyan rounded-full"></div>
-                            <span>Context-appropriate messaging</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-neon-cyan rounded-full"></div>
-                            <span>Gmail integration & delivery</span>
+                          <div>
+                            <h3 className="text-white font-semibold text-lg">
+                              Portia AI Magic
+                            </h3>
+                            <p className="text-cyan-200 text-sm">
+                              Advanced email intelligence at work
+                            </p>
                           </div>
                         </div>
-                        <div className="mt-3 text-xs text-gray-400 bg-gray-800/50 rounded p-2">
-                          <strong>How it works:</strong> Just provide the
-                          recipient and subject line. AI will generate
-                          appropriate email content and send it via your Gmail
-                          account.
+                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                          <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+                            <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-gray-200 text-sm">
+                              Smart content generation
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+                            <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-gray-200 text-sm">
+                              Professional tone
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+                            <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-gray-200 text-sm">
+                              Context awareness
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+                            <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                              <CheckCircle className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-gray-200 text-sm">
+                              Gmail integration
+                            </span>
+                          </div>
+                        </div>
+                        <div className="bg-gradient-to-r from-gray-800/60 to-gray-700/60 rounded-lg p-4 border border-gray-600/50">
+                          <div className="flex items-start gap-3">
+                            <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <Sparkles className="w-3 h-3 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="text-white font-medium text-sm mb-1">
+                                How it works
+                              </h4>
+                              <p className="text-gray-300 text-sm leading-relaxed">
+                                Simply provide the recipient and subject line.
+                                Our AI analyzes the context, generates
+                                professional email content, and delivers it
+                                through your Gmail account with perfect
+                                formatting and tone.
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
                       {/* Submit Button */}
-                      <div className="flex justify-center pt-4">
+                      <div className="flex justify-center pt-6">
                         <Button
                           type="submit"
                           disabled={isLoading || !subject || !recipientEmail}
-                          className="bg-gradient-to-r from-neon-cyan to-blue-500 text-black hover:from-neon-cyan/80 hover:to-blue-500/80 font-bold px-12 py-4 text-lg group disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 hover:from-cyan-600 hover:via-blue-600 hover:to-purple-700 text-white font-bold px-16 py-6 text-xl rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transform hover:scale-105"
                         >
                           {isLoading ? (
-                            <div className="flex items-center gap-2">
-                              <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                              <span>Sending Email...</span>
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                              <span>Crafting & Sending...</span>
                             </div>
                           ) : (
-                            <div className="flex items-center gap-2">
-                              <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                              <span>Send Email</span>
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              </div>
+                              <span>Generate & Send Email</span>
+                              <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                             </div>
                           )}
                         </Button>
