@@ -2,7 +2,7 @@
 export interface GenerateDocumentRequest {
   topic: string;
   urls?: string[];
-  output_format?: 'markdown' | 'html' | 'pdf' | 'docx';
+  output_format?: 'markdown';
 }
 
 export interface GenerateDocumentResponse {

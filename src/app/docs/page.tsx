@@ -488,11 +488,9 @@ export default function DocsPage() {
                             <SelectItem value="markdown">
                               Markdown (.md)
                             </SelectItem>
-                            <SelectItem value="html">HTML (.html)</SelectItem>
-                            <SelectItem value="pdf">PDF (.pdf)</SelectItem>
-                            <SelectItem value="docx">
-                              Word Document (.docx)
-                            </SelectItem>
+                                                   
+            
+                       
                           </SelectContent>
                         </Select>
                       </div>
