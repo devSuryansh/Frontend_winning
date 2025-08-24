@@ -85,7 +85,6 @@ export default function Home() {
             >
               <video
                 className="w-full h-full object-cover"
-                controls
                 autoPlay
                 muted
                 loop
