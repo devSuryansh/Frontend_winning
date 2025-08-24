@@ -9,8 +9,7 @@ import {
   Key,
   Sparkles,
   ArrowRight,
-  Shield,
-  Zap
+  Shield
 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -51,7 +50,7 @@ export default function LoginPage() {
         const errorData = await response.json();
         setError(errorData.detail || 'Invalid API key');
       }
-    } catch (error) {
+    } catch {
       setError('Network error. Please try again.');
     } finally {
       setIsLoading(false);

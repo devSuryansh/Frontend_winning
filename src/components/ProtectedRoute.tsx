@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, requireAuth } = useAuth();
+  const { isLoading, requireAuth } = useAuth();
 
   // Show loading spinner while checking authentication
   if (isLoading) {

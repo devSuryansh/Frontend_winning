@@ -22,7 +22,7 @@ const DocumentHistory = forwardRef<DocumentHistoryRef>((_, ref) => {
     const savedHistory = localStorage.getItem('document_history');
     if (savedHistory) {
       const parsed = JSON.parse(savedHistory);
-      setDocumentHistory(parsed.map((item: any) => ({
+      setDocumentHistory(parsed.map((item: DocumentHistoryItem & { timestamp: string }) => ({
         ...item,
         timestamp: new Date(item.timestamp)
       })));

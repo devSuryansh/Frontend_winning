@@ -26,7 +26,7 @@ const EmailHistory = forwardRef<EmailHistoryRef>((props, ref) => {
     const savedHistory = localStorage.getItem('email_history');
     if (savedHistory) {
       const parsed = JSON.parse(savedHistory);
-      setEmailHistory(parsed.map((item: any) => ({
+      setEmailHistory(parsed.map((item: EmailHistoryItem & { timestamp: string }) => ({
         ...item,
         timestamp: new Date(item.timestamp)
       })));

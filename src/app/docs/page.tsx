@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+
 import {
   Select,
   SelectContent,
@@ -38,15 +38,19 @@ import { useState, useRef } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
 import { GenerateDocumentResponse } from "@/types/document";
-import { apiCall, API_ENDPOINTS,API_BASE_URL } from "@/lib/api";
-import DocumentHistory, { DocumentHistoryRef } from "@/components/DocumentHistory";
+import { apiCall, API_ENDPOINTS } from "@/lib/api";
+import DocumentHistory, {
+  DocumentHistoryRef,
+} from "@/components/DocumentHistory";
 
 export default function DocsPage() {
   const [topic, setTopic] = useState("");
   const [urls, setUrls] = useState<string[]>([""]);
   const [outputFormat, setOutputFormat] = useState<string>("markdown");
   const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState<GenerateDocumentResponse | null>(null);
+  const [response, setResponse] = useState<GenerateDocumentResponse | null>(
+    null
+  );
   const { getToken } = useAuth();
   const documentHistoryRef = useRef<DocumentHistoryRef>(null);
 
@@ -77,8 +81,8 @@ export default function DocsPage() {
         throw new Error("No authentication token found");
       }
 
-      const filteredUrls = urls.filter(url => url.trim() !== "");
-      
+      const filteredUrls = urls.filter((url) => url.trim() !== "");
+
       const requestBody = {
         topic: topic,
         urls: filteredUrls.length > 0 ? filteredUrls : undefined,
@@ -126,7 +130,7 @@ export default function DocsPage() {
       if (documentHistoryRef.current) {
         documentHistoryRef.current.addToHistory({
           topic: topic,
-          urls: urls.filter(url => url.trim() !== ""),
+          urls: urls.filter((url) => url.trim() !== ""),
           output_format: outputFormat,
           success: false,
           error: errorResponse.error,
@@ -147,31 +151,34 @@ export default function DocsPage() {
   const handleDownload = async () => {
     if (response?.file_path) {
       try {
-        const filename = response.file_path.split('/').pop();
+        const filename = response.file_path.split("/").pop();
         const token = getToken();
         if (!token) {
           throw new Error("No authentication token found");
         }
 
-        const downloadResponse = await apiCall(`${API_ENDPOINTS.DOWNLOAD_DOCS}/${filename}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const downloadResponse = await apiCall(
+          `${API_ENDPOINTS.DOWNLOAD_DOCS}/${filename}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (downloadResponse.ok) {
           const blob = await downloadResponse.blob();
           const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
+          const a = document.createElement("a");
           a.href = url;
-          a.download = filename || 'document';
+          a.download = filename || "document";
           document.body.appendChild(a);
           a.click();
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
         }
       } catch (error) {
-        console.error('Download failed:', error);
+        console.error("Download failed:", error);
       }
     }
   };
@@ -202,7 +209,8 @@ export default function DocsPage() {
                 Documentation Agent
               </h1>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Generate comprehensive documentation with AI-powered research and content creation
+                Generate comprehensive documentation with AI-powered research
+                and content creation
               </p>
             </motion.div>
           </div>
@@ -288,14 +296,16 @@ export default function DocsPage() {
                                       Authentication Required
                                     </h4>
                                     <p className="text-amber-300/80 text-xs">
-                                      Additional permissions needed for document generation
+                                      Additional permissions needed for document
+                                      generation
                                     </p>
                                   </div>
                                 </div>
-                                
+
                                 <p className="text-amber-100/90 text-sm mb-4 leading-relaxed">
-                                  To generate comprehensive documentation, you may need to authenticate 
-                                  with external services for content access and file creation.
+                                  To generate comprehensive documentation, you
+                                  may need to authenticate with external
+                                  services for content access and file creation.
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row gap-3">
@@ -315,7 +325,8 @@ export default function DocsPage() {
                                   ) : (
                                     <div className="text-sm text-red-300 bg-red-900/20 border border-red-500/30 rounded-lg p-3">
                                       <AlertCircle className="w-4 h-4 inline mr-2" />
-                                      Authentication URL unavailable. Please try again.
+                                      Authentication URL unavailable. Please try
+                                      again.
                                     </div>
                                   )}
                                   <Button
@@ -410,7 +421,9 @@ export default function DocsPage() {
                                   type="url"
                                   placeholder="https://example.com/documentation"
                                   value={url}
-                                  onChange={(e) => updateUrl(index, e.target.value)}
+                                  onChange={(e) =>
+                                    updateUrl(index, e.target.value)
+                                  }
                                   className="bg-gray-900/60 border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400/20 h-10 text-sm rounded-lg shadow-inner"
                                   disabled={isLoading}
                                 />
@@ -447,7 +460,8 @@ export default function DocsPage() {
                         <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-500/30 rounded-lg p-3">
                           <p className="text-sm text-blue-200 flex items-center gap-2">
                             <Globe className="w-4 h-4 text-blue-400" />
-                            Leave empty to let AI research and find relevant sources automatically
+                            Leave empty to let AI research and find relevant
+                            sources automatically
                           </p>
                         </div>
                       </div>
@@ -462,15 +476,23 @@ export default function DocsPage() {
                             <span>Output Format</span>
                           </div>
                         </Label>
-                        <Select value={outputFormat} onValueChange={setOutputFormat} disabled={isLoading}>
+                        <Select
+                          value={outputFormat}
+                          onValueChange={setOutputFormat}
+                          disabled={isLoading}
+                        >
                           <SelectTrigger className="bg-gray-900/60 border-gray-600 text-white focus:border-purple-400 focus:ring-purple-400/20 h-12 rounded-xl">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="bg-gray-900 border-gray-700">
-                            <SelectItem value="markdown">Markdown (.md)</SelectItem>
+                            <SelectItem value="markdown">
+                              Markdown (.md)
+                            </SelectItem>
                             <SelectItem value="html">HTML (.html)</SelectItem>
                             <SelectItem value="pdf">PDF (.pdf)</SelectItem>
-                            <SelectItem value="docx">Word Document (.docx)</SelectItem>
+                            <SelectItem value="docx">
+                              Word Document (.docx)
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -495,25 +517,33 @@ export default function DocsPage() {
                             <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
-                            <span className="text-gray-200 text-sm">Web research & content extraction</span>
+                            <span className="text-gray-200 text-sm">
+                              Web research & content extraction
+                            </span>
                           </div>
                           <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
                             <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
-                            <span className="text-gray-200 text-sm">Professional formatting</span>
+                            <span className="text-gray-200 text-sm">
+                              Professional formatting
+                            </span>
                           </div>
                           <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
                             <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
-                            <span className="text-gray-200 text-sm">Structured organization</span>
+                            <span className="text-gray-200 text-sm">
+                              Structured organization
+                            </span>
                           </div>
                           <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
                             <div className="w-6 h-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
-                            <span className="text-gray-200 text-sm">Multiple output formats</span>
+                            <span className="text-gray-200 text-sm">
+                              Multiple output formats
+                            </span>
                           </div>
                         </div>
                         <div className="bg-gradient-to-r from-gray-800/60 to-gray-700/60 rounded-lg p-4 border border-gray-600/50">
@@ -522,11 +552,15 @@ export default function DocsPage() {
                               <Sparkles className="w-3 h-3 text-white" />
                             </div>
                             <div>
-                              <h4 className="text-white font-medium text-sm mb-1">How it works</h4>
+                              <h4 className="text-white font-medium text-sm mb-1">
+                                How it works
+                              </h4>
                               <p className="text-gray-300 text-sm leading-relaxed">
-                                Provide a topic and optional source URLs. Our AI will research the topic, 
-                                extract relevant information, organize it into a comprehensive document 
-                                with proper structure, and deliver it in your preferred format.
+                                Provide a topic and optional source URLs. Our AI
+                                will research the topic, extract relevant
+                                information, organize it into a comprehensive
+                                document with proper structure, and deliver it
+                                in your preferred format.
                               </p>
                             </div>
                           </div>
