@@ -9,7 +9,6 @@ import {
   Video, 
   Search, 
   Briefcase, 
-  Linkedin, 
   Github, 
   Workflow, 
   ArrowRight,
@@ -52,21 +51,29 @@ export default function Home() {
             className="text-center max-w-4xl mx-auto"
           >
             <motion.h1 
-              className="text-5xl md:text-7xl font-bold mb-6 neon-cyan"
+              className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight tracking-tight"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
+              style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
             >
-              Do Everything with Agents
+              Do Everything with{" "}
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                AI Agents
+              </span>
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
+              className="text-xl md:text-3xl text-gray-200 mb-16 max-w-4xl mx-auto font-light leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
+              style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
             >
-              Email, meetings, coding, publishing, search — all in one place.
+              Transform your workflow with intelligent AI agents that handle{" "}
+              <span className="text-cyan-400 font-medium">email</span>,{" "}
+              <span className="text-emerald-400 font-medium">documentation</span>,{" "}
+              <span className="text-purple-400 font-medium">coding</span>, and more — all in one unified platform.
             </motion.p>
             
             {/* Demo Video */}
@@ -90,26 +97,30 @@ export default function Home() {
             </motion.div>
             
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-6 justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <Button 
-                size="lg" 
-                className="!bg-[#00ffff] !text-black hover:!bg-[#00ffff]/80 font-semibold px-8 py-3 text-lg border-0"
-              >
-                Get Started
-              </Button>
               <Link href="/agents">
                 <Button 
                   size="lg" 
-                  variant="outline" 
-                  className="!border-[#00ffff] !text-[#00ffff] hover:!bg-[#00ffff]/10 font-semibold px-8 py-3 text-lg"
+                  className="bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-600 hover:via-blue-700 hover:to-purple-700 text-white font-bold px-12 py-4 text-xl rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 transform hover:scale-105"
+                  style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
                 >
-                  See Agents
+                  Explore AI Agents
+                  <ArrowRight className="ml-3 w-6 h-6" />
                 </Button>
               </Link>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-2 border-gray-600 text-gray-300 hover:border-cyan-400 hover:text-cyan-400 hover:bg-cyan-400/5 font-semibold px-12 py-4 text-xl rounded-2xl transition-all duration-300"
+                style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
+              >
+                <Play className="mr-3 w-6 h-6" />
+                Watch Demo
+              </Button>
             </motion.div>
           </motion.div>
         </div>
@@ -123,13 +134,15 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 neon-green">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 bg-clip-text text-transparent leading-tight"
+                style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
               Powerful AI Agents
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Choose the right agent for your task and watch them work their magic
+            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed"
+               style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+              Choose the perfect agent for your workflow and experience the future of productivity
             </p>
           </motion.div>
           
@@ -142,28 +155,35 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <Link href="/agents">
-                <Card className="glassmorphism hover:neon-cyan-border transition-all duration-300 hover:scale-105 cursor-pointer group">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
-                    <Users className="w-8 h-8 text-white" />
+                <Card className="glassmorphism hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 cursor-pointer group backdrop-blur-xl bg-gray-900/40 border border-gray-700/50 shadow-2xl hover:shadow-cyan-500/20">
+                <CardHeader className="text-center pb-6">
+                  <div className="relative">
+                    <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <Users className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-3 h-3 text-white" />
+                    </div>
                   </div>
-                  <CardTitle className="text-2xl font-bold text-white">Work Agent</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Handle all your professional tasks
+                  <CardTitle className="text-2xl font-bold text-white mb-3" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    Work Agent
+                  </CardTitle>
+                  <CardDescription className="text-gray-300 text-base leading-relaxed" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    Handle all your professional tasks with intelligent automation
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Mail className="w-5 h-5 text-neon-cyan" />
-                    <span>Email Management</span>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
+                    <Mail className="w-5 h-5 text-cyan-400" />
+                    <span className="font-medium">Smart Email Management</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <FileText className="w-5 h-5 text-neon-cyan" />
-                    <span>Document Creation</span>
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                    <FileText className="w-5 h-5 text-emerald-400" />
+                    <span className="font-medium">Document Generation</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Video className="w-5 h-5 text-neon-cyan" />
-                    <span>Meeting Assistant</span>
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                    <Video className="w-5 h-5 text-purple-400" />
+                    <span className="font-medium">Meeting Assistant</span>
                   </div>
                 </CardContent>
               </Card>
@@ -178,28 +198,35 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <Link href="/agents/web">
-                <Card className="glassmorphism hover:neon-green-border transition-all duration-300 hover:scale-105 cursor-pointer group">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
-                    <Search className="w-8 h-8 text-white" />
+                <Card className="glassmorphism hover:border-emerald-400/50 transition-all duration-500 hover:scale-105 cursor-pointer group backdrop-blur-xl bg-gray-900/40 border border-gray-700/50 shadow-2xl hover:shadow-emerald-500/20">
+                <CardHeader className="text-center pb-6">
+                  <div className="relative">
+                    <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <Search className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <Zap className="w-3 h-3 text-white" />
+                    </div>
                   </div>
-                  <CardTitle className="text-2xl font-bold text-white">Web Agent</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Navigate and search the web intelligently
+                  <CardTitle className="text-2xl font-bold text-white mb-3" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    Web Agent
+                  </CardTitle>
+                  <CardDescription className="text-gray-300 text-base leading-relaxed" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    Navigate and search the web with AI-powered intelligence
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Search className="w-5 h-5 text-neon-green" />
-                    <span>Web Search</span>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                    <Search className="w-5 h-5 text-emerald-400" />
+                    <span className="font-medium">Intelligent Web Search</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Briefcase className="w-5 h-5 text-neon-green" />
-                    <span>Job Search</span>
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-teal-500/10 rounded-lg border border-teal-500/20">
+                    <Briefcase className="w-5 h-5 text-teal-400" />
+                    <span className="font-medium">Job & Career Search</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Linkedin className="w-5 h-5 text-neon-green" />
-                    <span>LinkedIn & GitHub</span>
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
+                    <Github className="w-5 h-5 text-cyan-400" />
+                    <span className="font-medium">Social & Professional</span>
                   </div>
                 </CardContent>
               </Card>
@@ -214,28 +241,35 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <Link href="/agents/mcp">
-                <Card className="glassmorphism hover:neon-cyan-border transition-all duration-300 hover:scale-105 cursor-pointer group">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
-                    <Workflow className="w-8 h-8 text-white" />
+                <Card className="glassmorphism hover:border-purple-400/50 transition-all duration-500 hover:scale-105 cursor-pointer group backdrop-blur-xl bg-gray-900/40 border border-gray-700/50 shadow-2xl hover:shadow-purple-500/20">
+                <CardHeader className="text-center pb-6">
+                  <div className="relative">
+                    <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-600 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <Workflow className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center">
+                      <Zap className="w-3 h-3 text-white" />
+                    </div>
                   </div>
-                  <CardTitle className="text-2xl font-bold text-white">MCP Agent</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Orchestrate complex workflows
+                  <CardTitle className="text-2xl font-bold text-white mb-3" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    MCP Agent
+                  </CardTitle>
+                  <CardDescription className="text-gray-300 text-base leading-relaxed" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                    Orchestrate complex workflows with advanced automation
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Workflow className="w-5 h-5 text-neon-cyan" />
-                    <span>Task Orchestration</span>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                    <Workflow className="w-5 h-5 text-purple-400" />
+                    <span className="font-medium">Task Orchestration</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <Zap className="w-5 h-5 text-neon-cyan" />
-                    <span>Workflow Management</span>
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-pink-500/10 rounded-lg border border-pink-500/20">
+                    <Zap className="w-5 h-5 text-pink-400" />
+                    <span className="font-medium">Workflow Management</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-300">
-                    <CheckCircle className="w-5 h-5 text-neon-cyan" />
-                    <span>Process Automation</span>
+                  <div className="flex items-center gap-4 text-gray-200 p-3 bg-rose-500/10 rounded-lg border border-rose-500/20">
+                    <CheckCircle className="w-5 h-5 text-rose-400" />
+                    <span className="font-medium">Process Automation</span>
                   </div>
                 </CardContent>
               </Card>
@@ -253,13 +287,15 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 neon-cyan">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight"
+                style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
               How It Works
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Get started in just a few simple steps
+            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed"
+               style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+              Get started in just a few simple steps and transform your productivity
             </p>
           </motion.div>
           
@@ -288,16 +324,23 @@ export default function Home() {
                   >
                     {/* Icon */}
                     <div className="relative z-10">
-                      <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-green rounded-full flex items-center justify-center glow-pulse">
-                        <item.icon className="w-8 h-8 text-white" />
+                      <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-2xl shadow-cyan-500/30 hover:scale-110 transition-transform duration-300">
+                        <item.icon className="w-10 h-10 text-white" />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        {item.step}
                       </div>
                     </div>
                     
                     {/* Content */}
                     <div className={`flex-1 ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
-                      <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
-                        <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                        <p className="text-gray-300">{item.description}</p>
+                      <div className="bg-gradient-to-br from-gray-900/60 to-gray-800/60 backdrop-blur-xl rounded-2xl p-8 border border-gray-600/50 shadow-xl hover:shadow-cyan-500/10 transition-all duration-300">
+                        <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-300 text-lg leading-relaxed" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                          {item.description}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -318,19 +361,36 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 neon-green">
+            <h2 className="text-5xl md:text-8xl font-black mb-8 bg-gradient-to-r from-emerald-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent leading-tight"
+                style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
               Your AI Operating System is here.
             </h2>
-            <p className="text-xl text-gray-300 mb-12">
-              Join thousands of users who are already working smarter with AgenticOS
+            <p className="text-xl md:text-2xl text-gray-200 mb-16 font-light leading-relaxed max-w-4xl mx-auto"
+               style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+              Join thousands of users who are already working smarter with{" "}
+              <span className="text-cyan-400 font-medium">Portia AI</span> — 
+              the future of intelligent productivity
             </p>
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-neon-cyan to-neon-green text-black hover:from-neon-cyan/80 hover:to-neon-green/80 font-bold px-12 py-4 text-xl group"
-            >
-              Launch AgenticOS
-              <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link href="/agents">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-600 hover:from-emerald-600 hover:via-cyan-600 hover:to-blue-700 text-white font-bold px-16 py-6 text-2xl rounded-2xl shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105 group"
+                  style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
+                >
+                  Launch Portia AI
+                  <ArrowRight className="ml-3 w-7 h-7 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-2 border-gray-600 text-gray-300 hover:border-emerald-400 hover:text-emerald-400 hover:bg-emerald-400/5 font-semibold px-16 py-6 text-2xl rounded-2xl transition-all duration-300"
+                style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}
+              >
+                Learn More
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
