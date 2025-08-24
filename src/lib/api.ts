@@ -4,6 +4,7 @@ export const API_BASE_URL =
 
 export const API_ENDPOINTS = {
   SEND_EMAIL: "/api/send-email",
+  CREATE_DOCS: "/api/docs/create-document",
   AUTH: "/auth",
   HEALTH: "/health",
 } as const;
