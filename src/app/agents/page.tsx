@@ -104,36 +104,38 @@ export default function AgentsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <Card className="glassmorphism hover:neon-green-border transition-all duration-300 hover:scale-105 cursor-pointer group h-full">
-                <CardHeader className="text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
-                    <FileText className="w-10 h-10 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-white">Docs Agent</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Document creation and editing assistance
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-gray-300">
-                      <FileEdit className="w-5 h-5 text-neon-green" />
-                      <span>Document Writing</span>
+              <Link href="/docs">
+                <Card className="glassmorphism hover:neon-green-border transition-all duration-300 hover:scale-105 cursor-pointer group h-full">
+                  <CardHeader className="text-center">
+                    <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:glow-pulse">
+                      <FileText className="w-10 h-10 text-white" />
                     </div>
-                    <div className="flex items-center gap-3 text-gray-300">
-                      <Zap className="w-5 h-5 text-neon-green" />
-                      <span>Content Generation</span>
+                    <CardTitle className="text-2xl font-bold text-white">Documentation Agent</CardTitle>
+                    <CardDescription className="text-gray-400">
+                      AI-powered comprehensive documentation generation
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 text-gray-300">
+                        <Search className="w-5 h-5 text-neon-green" />
+                        <span>Web Research</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-gray-300">
+                        <FileEdit className="w-5 h-5 text-neon-green" />
+                        <span>Content Generation</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-gray-300">
+                        <CheckCircle className="w-5 h-5 text-neon-green" />
+                        <span>Multiple Formats</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3 text-gray-300">
-                      <CheckCircle className="w-5 h-5 text-neon-green" />
-                      <span>Format & Style</span>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-neon-green text-black hover:bg-neon-green/80 mt-4">
-                    Launch Docs Agent
-                  </Button>
-                </CardContent>
-              </Card>
+                    <Button className="w-full bg-neon-green text-black hover:bg-neon-green/80 mt-4">
+                      Launch Documentation Agent
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Link>
             </motion.div>
 
             {/* GitHub Agent */}
